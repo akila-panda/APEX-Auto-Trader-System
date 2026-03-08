@@ -1,3 +1,4 @@
+// src/store/useBotStore.ts
 import { create } from 'zustand'
 import type { AnalysisResult } from '../types/analysis.types'
 

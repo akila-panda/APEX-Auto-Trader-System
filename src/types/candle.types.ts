@@ -1,3 +1,4 @@
+// src/types/candle.types.ts
 /** Raw OHLCV candle from Twelve Data API or fallback generator */
 export interface Candle {
   open: number

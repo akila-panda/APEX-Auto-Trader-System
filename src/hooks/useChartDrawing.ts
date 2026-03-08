@@ -1,3 +1,4 @@
+// src/hooks/useChartDrawing.ts
 /**
  * useChartDrawing.ts
  * Canvas drawing orchestration with rAF throttling.

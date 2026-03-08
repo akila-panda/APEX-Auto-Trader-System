@@ -1,3 +1,4 @@
+// src/engines/confluence/mssConfluence.ts
 /**
  * mssConfluence.ts — cf_mss: BOS or ChoCH matches macro direction
  * Direction guard lives HERE, not in oteConfluence (FIX C-3).

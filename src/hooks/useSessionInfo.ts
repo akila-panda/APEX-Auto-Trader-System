@@ -1,3 +1,4 @@
+// src/hooks/useSessionInfo.ts
 /**
  * useSessionInfo.ts
  * Returns live session info: isKillZone, isLondon, isNY, sessionName.

@@ -1,3 +1,4 @@
+// tests/engines/signalRanker.test.ts
 import { describe, it, expect } from 'vitest'
 import { rankSignals } from '../../src/engines/signal/signalRanker'
 import type { AnalysisResult } from '../../src/types/analysis.types'

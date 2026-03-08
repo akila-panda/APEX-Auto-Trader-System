@@ -1,3 +1,4 @@
+// src/utils/localStorage.ts
 /**
  * localStorage.ts
  * Versioned persistence for trades. Schema v3 — old schemas are cleared on detection.

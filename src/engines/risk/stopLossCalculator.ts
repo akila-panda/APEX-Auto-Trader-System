@@ -1,3 +1,4 @@
+// src/engines/risk/stopLossCalculator.ts
 /**
  * stopLossCalculator.ts
  * Entry ± SL_PIPS × PIP

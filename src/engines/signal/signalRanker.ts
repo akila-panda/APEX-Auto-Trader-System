@@ -1,3 +1,4 @@
+// src/engines/signal/signalRanker.ts
 /**
  * signalRanker.ts
  * [FIX A-4] Ranks signals by effective score + Kill Zone bonus + TF weight.

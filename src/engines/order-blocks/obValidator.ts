@@ -1,3 +1,4 @@
+// src/engines/order-blocks/obValidator.ts
 /**
  * obValidator.ts
  * Confirms an Order Block is unmitigated — price has not fully entered

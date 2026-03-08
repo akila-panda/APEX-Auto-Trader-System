@@ -1,3 +1,4 @@
+// tests/engines/fvgDetector.test.ts
 import { describe, it, expect } from 'vitest'
 import { detectFVG } from '../../src/engines/fair-value-gaps/index'
 import type { Candle } from '../../src/types/candle.types'

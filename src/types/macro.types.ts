@@ -1,3 +1,4 @@
+// src/types/macro.types.ts
 export type MacroBias     = 'bullish' | 'bearish' | 'neutral'
 export type MacroStrength = 'STRONG' | 'MEDIUM' | 'WEAK'
 

@@ -1,3 +1,4 @@
+// src/config/timeframes.config.ts
 import { CANDLE_CACHE_TTL_MS } from './api.config'
 
 export interface TimeframeDef {

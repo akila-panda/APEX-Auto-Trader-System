@@ -1,3 +1,4 @@
+// src/components/views/TradeTableView.tsx
 import { useTradeStore } from '../../store/useTradeStore'
 import type { Trade } from '../../types/trade.types'
 import { useState, useMemo } from 'react'

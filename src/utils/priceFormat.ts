@@ -1,3 +1,4 @@
+// src/utils/priceFormat.ts
 /**
  * priceFormat.ts
  * Price formatting utilities for EUR/USD (5 decimal places).

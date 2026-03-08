@@ -1,3 +1,4 @@
+// src/components/shared/FeedItem.tsx
 // FeedItem.tsx
 type FeedBadge = 'SCAN' | 'TRADE' | 'WARN' | 'INFO' | 'ERR' | 'SIGNAL' | 'LIVE' | 'BOT' | 'MACRO' | 'COOLDOWN' | 'NEWS' | string
 

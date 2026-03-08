@@ -1,3 +1,4 @@
+<!-- Folder Structure.md -->
 # Folder Structure: APEX 2
 
 This document provides a comprehensive mapping of all files in the `src` directory, along with a description of their core functionality.

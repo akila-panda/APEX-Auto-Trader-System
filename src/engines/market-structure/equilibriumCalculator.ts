@@ -1,3 +1,4 @@
+// src/engines/market-structure/equilibriumCalculator.ts
 /**
  * equilibriumCalculator.ts
  * Computes the 50% equilibrium (midpoint) of the current swing range,

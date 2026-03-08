@@ -1,3 +1,4 @@
+// src/engines/human-thinking/patternRecognizer.ts
 /**
  * patternRecognizer.ts
  * Detects named ICT/SMC setups from combined analysis results.

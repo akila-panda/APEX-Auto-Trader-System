@@ -1,3 +1,4 @@
+// src/store/useTradeStore.ts
 import { create } from 'zustand'
 import type { Trade } from '../types/trade.types'
 import { loadTrades, saveTrades } from '../utils/localStorage'

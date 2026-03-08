@@ -1,3 +1,4 @@
+// src/engines/ote/index.ts
 /**
  * engines/ote/index.ts
  * Module contract:

@@ -1,3 +1,4 @@
+// src/components/sidebar-left/tabs/FeedTab.tsx
 import { useMarketStore } from '../../../store/useMarketStore'
 import { FeedItem } from '../../shared/FeedItem'
 

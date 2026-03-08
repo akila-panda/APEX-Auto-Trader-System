@@ -1,3 +1,4 @@
+// tests/utils/priceFormat.test.ts
 import { describe, it, expect } from 'vitest'
 import { fmt5, fmt2, fmtPips, fmtPnl } from '../../src/utils/priceFormat'
 

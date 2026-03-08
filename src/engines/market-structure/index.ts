@@ -1,3 +1,4 @@
+// src/engines/market-structure/index.ts
 /**
  * engines/market-structure/index.ts
  * Orchestrates pivot detection → structure classification → equilibrium calculation.

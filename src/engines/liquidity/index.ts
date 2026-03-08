@@ -1,3 +1,4 @@
+// src/engines/liquidity/index.ts
 /**
  * engines/liquidity/index.ts
  * Module contract:

@@ -1,3 +1,4 @@
+// src/components/shared/Badge.tsx
 // shared/Badge.tsx
 import type { ReactNode } from 'react'
 

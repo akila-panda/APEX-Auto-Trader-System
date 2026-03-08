@@ -1,3 +1,4 @@
+// src/engines/ote/fibonacciCalculator.ts
 /**
  * fibonacciCalculator.ts
  * Computes OTE Fibonacci levels (62%, 70.5%, 79%) from an impulse leg.

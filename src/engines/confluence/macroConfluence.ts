@@ -1,3 +1,4 @@
+// src/engines/confluence/macroConfluence.ts
 /**
  * macroConfluence.ts
  * cf_macro: User macro bias is not neutral (FIX A-2)

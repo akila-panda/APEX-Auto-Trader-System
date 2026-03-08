@@ -1,3 +1,4 @@
+// src/utils/pipCalculator.ts
 /**
  * pipCalculator.ts
  * Pip distance and value conversions for EUR/USD.

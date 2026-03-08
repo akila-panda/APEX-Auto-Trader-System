@@ -1,3 +1,4 @@
+// src/engines/fair-value-gaps/index.ts
 /**
  * engines/fair-value-gaps/index.ts
  * Module contract:

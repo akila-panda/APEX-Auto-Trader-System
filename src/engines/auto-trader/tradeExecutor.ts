@@ -1,3 +1,4 @@
+// src/engines/auto-trader/tradeExecutor.ts
 /**
  * tradeExecutor.ts
  * Creates a trade record with a probability-weighted simulated outcome.

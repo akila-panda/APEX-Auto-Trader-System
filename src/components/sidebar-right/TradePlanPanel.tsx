@@ -1,3 +1,4 @@
+// src/components/sidebar-right/TradePlanPanel.tsx
 import type { AnalysisResult } from '../../types/analysis.types'
 import {
   RISK_AMOUNT,

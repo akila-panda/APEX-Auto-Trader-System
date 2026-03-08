@@ -1,3 +1,4 @@
+// src/engines/liquidity/sweepDetector.ts
 /**
  * sweepDetector.ts
  * [FIX C-2] Detects liquidity sweeps over a 6-candle window, persisting validity

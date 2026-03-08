@@ -1,3 +1,4 @@
+// src/engines/liquidity/asianRangeCalculator.ts
 /**
  * asianRangeCalculator.ts
  * Computes the true UTC Asian session range from candle timestamps.

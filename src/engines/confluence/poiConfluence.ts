@@ -1,3 +1,4 @@
+// src/engines/confluence/poiConfluence.ts
 /**
  * poiConfluence.ts
  * [FIX C-1] cf_poi: OB or FVG within POI_PROXIMITY_PIPS of current price.

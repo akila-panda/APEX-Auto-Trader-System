@@ -1,3 +1,4 @@
+<!-- README.md -->
 # APEX EUR/USD v3 Ultimate
 
 > Institutional SMC Auto-Trader — React + TypeScript + Vite

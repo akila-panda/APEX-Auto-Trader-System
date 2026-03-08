@@ -1,3 +1,4 @@
+// tests/engines/confluenceScorer.test.ts
 import { describe, it, expect } from 'vitest'
 import { scoreConfluence } from '../../src/engines/confluence/confluenceScorer'
 

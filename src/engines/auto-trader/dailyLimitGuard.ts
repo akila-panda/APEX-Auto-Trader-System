@@ -1,3 +1,4 @@
+// src/engines/auto-trader/dailyLimitGuard.ts
 /**
  * dailyLimitGuard.ts
  * UTC date-based daily trade limit enforcement.

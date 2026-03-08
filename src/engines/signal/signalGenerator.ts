@@ -1,3 +1,4 @@
+// src/engines/signal/signalGenerator.ts
 /**
  * signalGenerator.ts
  * Determines signal direction from analysis result.

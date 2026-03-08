@@ -1,3 +1,4 @@
+// src/engines/human-thinking/biasReasoningEngine.ts
 /**
  * biasReasoningEngine.ts
  * Generates a human-readable sentence for each confluence point explaining

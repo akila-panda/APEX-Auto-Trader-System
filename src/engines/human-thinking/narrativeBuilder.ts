@@ -1,3 +1,4 @@
+// src/engines/human-thinking/narrativeBuilder.ts
 /**
  * narrativeBuilder.ts
  * Builds a 3–4 sentence trade narrative from all analysis components.

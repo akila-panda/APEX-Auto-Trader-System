@@ -1,3 +1,4 @@
+// src/engines/bos-choch/impulseLegTracer.ts
 /**
  * impulseLegTracer.ts
  * [FIX B-2] Walks back from a displacement candle to find the full impulse leg origin.

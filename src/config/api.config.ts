@@ -1,3 +1,4 @@
+// src/config/api.config.ts
 /** Twelve Data API configuration  */
 export const TD_API_KEY  = import.meta.env.VITE_TD_API_KEY ?? '0dc58b7071b64c4c9c0e981c0c753dff'
 export const TD_BASE_URL = 'https://api.twelvedata.com'

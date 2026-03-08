@@ -1,3 +1,4 @@
+// src/engines/bos-choch/chochDetector.ts
 /**
  * chochDetector.ts
  * Detects a Change of Character (ChoCH) — price closes beyond a prior confirmed pivot.

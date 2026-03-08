@@ -1,3 +1,4 @@
+// src/engines/bos-choch/displacementDetector.ts
 /**
  * displacementDetector.ts
  * Detects a displacement candle — a strong momentum candle with body ratio > 60%.

@@ -1,3 +1,4 @@
+// src/engines/human-thinking/index.ts
 /**
  * engines/human-thinking/index.ts
  * Module contract:

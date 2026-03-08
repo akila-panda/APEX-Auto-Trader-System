@@ -1,3 +1,4 @@
+// src/engines/market-structure/structureClassifier.ts
 /**
  * structureClassifier.ts
  * Classifies market structure as bullish (HH/HL), bearish (LH/LL), or ranging

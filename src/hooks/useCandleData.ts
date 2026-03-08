@@ -1,3 +1,4 @@
+// src/hooks/useCandleData.ts
 /**
  * useCandleData.ts
  * React Query wrapper for candle fetching per timeframe.

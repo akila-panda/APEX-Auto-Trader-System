@@ -1,3 +1,4 @@
+// src/components/sidebar-left/LeftSidebar.tsx
 import { useState } from 'react'
 import { StrategyTab }  from './tabs/StrategyTab'
 import { FeedTab }      from './tabs/FeedTab'

@@ -1,3 +1,4 @@
+// src/engines/confluence/killZoneConfluence.ts
 /**
  * killZoneConfluence.ts — cf_kz: London 07–10 or NY 12–15 UTC
  */

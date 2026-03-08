@@ -1,3 +1,4 @@
+// src/engines/auto-trader/index.ts
 /**
  * engines/auto-trader/index.ts
  * Module contract:

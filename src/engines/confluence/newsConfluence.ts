@@ -1,3 +1,4 @@
+// src/engines/confluence/newsConfluence.ts
 /**
  * newsConfluence.ts — cf_news: no high-impact event within ±NEWS_PROXIMITY_MINS
  */

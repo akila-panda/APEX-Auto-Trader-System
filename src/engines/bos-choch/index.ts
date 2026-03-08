@@ -1,3 +1,4 @@
+// src/engines/bos-choch/index.ts
 /**
  * engines/bos-choch/index.ts
  * Module contract:

@@ -1,3 +1,4 @@
+// src/hooks/useLivePrice.ts
 /**
  * useLivePrice.ts
  * Subscribes to the WebSocket price feed and updates the market store.

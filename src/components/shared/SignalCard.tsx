@@ -1,3 +1,4 @@
+// src/components/shared/SignalCard.tsx
 // SignalCard.tsx
 import type { AnalysisResult } from '../../types/analysis.types'
 import { fmt5 } from '../../utils/priceFormat'

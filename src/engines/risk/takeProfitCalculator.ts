@@ -1,3 +1,4 @@
+// src/engines/risk/takeProfitCalculator.ts
 /**
  * takeProfitCalculator.ts
  * TP1 at 1.5R, TP2 at 3R, Runner at 4R+

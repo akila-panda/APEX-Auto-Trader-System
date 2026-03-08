@@ -1,3 +1,4 @@
+// src/engines/fair-value-gaps/fvgDetector.ts
 /**
  * fvgDetector.ts
  * [FIX B-5] Detects Fair Value Gaps (FVGs) using a newest-first scan.

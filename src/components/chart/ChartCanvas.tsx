@@ -1,3 +1,4 @@
+// src/components/chart/ChartCanvas.tsx
 import { useRef, useEffect } from 'react'
 import { useMarketStore } from '../../store/useMarketStore'
 import { useMacroStore }  from '../../store/useMacroStore'

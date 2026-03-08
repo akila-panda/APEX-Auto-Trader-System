@@ -1,3 +1,4 @@
+// src/components/shared/TFCard.tsx
 import type { AnalysisResult } from '../../types/analysis.types'
 import { TF_WEIGHT } from '../../config/trading.config'
 import { TF_LABEL } from '../../config/timeframes.config'

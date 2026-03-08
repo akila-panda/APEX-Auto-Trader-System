@@ -1,3 +1,4 @@
+// src/config/trading.config.ts
 /** Account & risk management constants */
 export const ACCOUNT_BALANCE = 10_000
 export const RISK_PCT        = 0.02

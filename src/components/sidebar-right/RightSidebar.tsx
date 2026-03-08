@@ -1,3 +1,4 @@
+// src/components/sidebar-right/RightSidebar.tsx
 import { useState } from 'react'
 import { useMarketStore } from '../../store/useMarketStore'
 import { PriceLevelsPanel } from './PriceLevelsPanel'

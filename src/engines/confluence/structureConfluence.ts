@@ -1,3 +1,4 @@
+// src/engines/confluence/structureConfluence.ts
 /**
  * structureConfluence.ts
  * [FIX C-1] cf_structure: HTF structure matches macro bias AND price is in the right zone.

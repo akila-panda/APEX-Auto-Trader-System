@@ -1,3 +1,4 @@
+// src/engines/signal/index.ts
 /**
  * engines/signal/index.ts
  * Module contract:

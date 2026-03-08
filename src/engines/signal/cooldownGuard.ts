@@ -1,3 +1,4 @@
+// src/engines/signal/cooldownGuard.ts
 /**
  * cooldownGuard.ts
  * [FIX A-5] Re-entry cooldown: blocks same-direction trades within N minutes.

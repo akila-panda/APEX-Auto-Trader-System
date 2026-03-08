@@ -1,3 +1,4 @@
+// src/api/candleCache.ts
 /**
  * candleCache.ts
  * Manages candle cache freshness and fallback generation.

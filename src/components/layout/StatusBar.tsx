@@ -1,3 +1,4 @@
+// src/components/layout/StatusBar.tsx
 import { useState, useEffect } from 'react'
 import { useTradeStore }  from '../../store/useTradeStore'
 import { useBotStore }    from '../../store/useBotStore'

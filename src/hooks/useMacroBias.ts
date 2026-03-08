@@ -1,3 +1,4 @@
+// src/hooks/useMacroBias.ts
 /**
  * useMacroBias.ts
  * Reads macro store and exposes computed bias, score, strength.

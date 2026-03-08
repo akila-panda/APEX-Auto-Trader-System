@@ -1,3 +1,4 @@
+// src/types/trade.types.ts
 export type TradeStatus = 'WIN' | 'LOSS' | 'BE' | 'OPEN'
 
 export interface RiskParams {

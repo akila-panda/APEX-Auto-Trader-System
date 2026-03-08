@@ -1,3 +1,4 @@
+// src/engines/risk/lotSizeCalculator.ts
 /**
  * lotSizeCalculator.ts
  * Computes position size in lots: Risk Amount / (SL Pips × Pip Value)

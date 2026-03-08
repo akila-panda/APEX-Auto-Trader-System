@@ -1,3 +1,4 @@
+// src/engines/market-structure/pivotDetection.ts
 /**
  * pivotDetection.ts
  * [FIX B-1] Detects 3-bar pivot swing highs and lows from a candle array.

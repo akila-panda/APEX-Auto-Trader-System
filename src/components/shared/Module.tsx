@@ -1,3 +1,4 @@
+// src/components/shared/Module.tsx
 import { useState, type ReactNode } from 'react'
 import { Badge } from './Badge'
 

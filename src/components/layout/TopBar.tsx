@@ -1,3 +1,4 @@
+// src/components/layout/TopBar.tsx
 import { useState, useEffect } from 'react'
 import type { NavTab } from '../../App'
 import { useMarketStore } from '../../store/useMarketStore'

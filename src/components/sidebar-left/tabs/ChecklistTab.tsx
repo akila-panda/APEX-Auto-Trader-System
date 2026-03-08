@@ -1,3 +1,4 @@
+// src/components/sidebar-left/tabs/ChecklistTab.tsx
 import { useState } from 'react'
 
 const CHECKLIST_ITEMS = [

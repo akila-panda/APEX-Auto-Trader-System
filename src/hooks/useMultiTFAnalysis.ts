@@ -1,3 +1,4 @@
+// src/hooks/useMultiTFAnalysis.ts
 /**
  * useMultiTFAnalysis.ts
  * Runs full analysis across all 6 timeframes reactively from cached candle data.

@@ -1,3 +1,4 @@
+// src/api/rateLimit.ts
 /**
  * rateLimit.ts
  * [FIX R-2] Implements a sliding-window rate limiter for the Twelve Data API.

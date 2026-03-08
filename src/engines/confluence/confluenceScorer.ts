@@ -1,3 +1,4 @@
+// src/engines/confluence/confluenceScorer.ts
 /**
  * confluenceScorer.ts
  * [FIX C-4] Aggregates 5 core confluence points + optional macro strength bonus.

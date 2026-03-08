@@ -1,3 +1,4 @@
+// src/engines/confluence/oteConfluence.ts
 /**
  * oteConfluence.ts
  * [FIX C-3] cf_ote: Price is in the OTE zone — PURE location check only.

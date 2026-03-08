@@ -1,3 +1,4 @@
+// src/components/sidebar-left/modules/OrderBlockModule.tsx
 import { Module } from '../../shared/Module'
 import type { AnalysisResult } from '../../../types/analysis.types'
 

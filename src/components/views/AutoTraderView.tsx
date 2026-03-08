@@ -1,3 +1,4 @@
+// src/components/views/AutoTraderView.tsx
 import { useBotStore, type BotSettings } from '../../store/useBotStore'
 import { useMarketStore } from '../../store/useMarketStore'
 import { useTradeStore } from '../../store/useTradeStore'

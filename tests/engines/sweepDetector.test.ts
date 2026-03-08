@@ -1,3 +1,4 @@
+// tests/engines/sweepDetector.test.ts
 import { describe, it, expect, beforeEach } from 'vitest'
 import { detectSweep } from '../../src/engines/liquidity/sweepDetector'
 import type { Candle } from '../../src/types/candle.types'

@@ -1,3 +1,4 @@
+// src/engines/fair-value-gaps/fvgMitigationChecker.ts
 /**
  * fvgMitigationChecker.ts
  * Checks if price has partially or fully filled a Fair Value Gap.

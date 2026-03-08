@@ -1,3 +1,4 @@
+<!-- DOcument APEX.md -->
 # DOCUMENT APEX: System Architecture & Technical Manual
 
 Welcome to the **APEX 2** technical documentation. This document serves as a comprehensive guide for developers onboarding to the project, explaining the system's design, logic, and operational flow.

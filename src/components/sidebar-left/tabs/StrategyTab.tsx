@@ -1,3 +1,4 @@
+// src/components/sidebar-left/tabs/StrategyTab.tsx
 import { useMarketStore } from '../../../store/useMarketStore'
 import { StructureModule } from '../modules/StructureModule'
 import { LiquidityModule } from '../modules/LiquidityModule'

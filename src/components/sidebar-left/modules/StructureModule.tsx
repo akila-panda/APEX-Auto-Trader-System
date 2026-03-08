@@ -1,3 +1,4 @@
+// src/components/sidebar-left/modules/StructureModule.tsx
 import { Module } from '../../shared/Module'
 import type { AnalysisResult } from '../../../types/analysis.types'
 

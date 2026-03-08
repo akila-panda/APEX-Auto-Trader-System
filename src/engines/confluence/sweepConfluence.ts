@@ -1,3 +1,4 @@
+// src/engines/confluence/sweepConfluence.ts
 /**
  * sweepConfluence.ts  — cf_sweep: liquidity sweep in macro direction
  */

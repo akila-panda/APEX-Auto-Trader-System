@@ -1,3 +1,4 @@
+// src/types/analysis.types.ts
 import type { RiskParams } from './trade.types'
 import type { MacroBias, MacroStrength } from './macro.types'
 

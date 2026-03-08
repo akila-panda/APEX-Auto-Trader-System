@@ -1,3 +1,4 @@
+// src/api/webSocket.ts
 /**
  * webSocket.ts
  * Manages the Twelve Data WebSocket connection for live EUR/USD price streaming.

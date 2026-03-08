@@ -1,3 +1,4 @@
+// src/components/shared/MacroStrengthBadge.tsx
 // MacroStrengthBadge.tsx — FIX C-4
 import type { MacroStrength } from '../../types/macro.types'
 

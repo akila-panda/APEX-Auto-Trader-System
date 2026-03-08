@@ -1,3 +1,4 @@
+// src/engines/risk/index.ts
 /**
  * engines/risk/index.ts
  * Module contract:

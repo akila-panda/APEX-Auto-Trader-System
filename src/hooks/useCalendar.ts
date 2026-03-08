@@ -1,3 +1,4 @@
+// src/hooks/useCalendar.ts
 /**
  * useCalendar.ts
  * Builds the weekly high-impact economic calendar and checks for nearby events.

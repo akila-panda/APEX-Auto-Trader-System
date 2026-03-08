@@ -1,3 +1,4 @@
+// src/store/useMacroStore.ts
 import { create } from 'zustand'
 import type { MacroInputs, MacroBias, MacroStrength, MacroBiasResult } from '../types/macro.types'
 import {

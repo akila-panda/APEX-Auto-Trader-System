@@ -1,3 +1,4 @@
+// tests/engines/pivotDetection.test.ts
 import { describe, it, expect } from 'vitest'
 import { detectPivots } from '../../src/engines/market-structure/pivotDetection'
 import type { Candle } from '../../src/types/candle.types'

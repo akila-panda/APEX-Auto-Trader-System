@@ -1,3 +1,4 @@
+// src/components/sidebar-right/PriceLevelsPanel.tsx
 import type { AnalysisResult } from '../../types/analysis.types'
 
 interface Props { analysis: AnalysisResult | null }

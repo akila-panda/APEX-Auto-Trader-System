@@ -1,3 +1,4 @@
+// src/components/views/ChartView.tsx
 import { LeftSidebar }    from '../sidebar-left/LeftSidebar'
 import { ChartCanvas }    from '../chart/ChartCanvas'
 import { RightSidebar }   from '../sidebar-right/RightSidebar'

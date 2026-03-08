@@ -1,3 +1,4 @@
+// src/engines/auto-trader/botCycleOrchestrator.ts
 /**
  * botCycleOrchestrator.ts
  * [FIX A-1] Main bot cycle with cycleRunning ref guard preventing concurrent execution.

@@ -1,3 +1,4 @@
+// src/engines/order-blocks/index.ts
 /**
  * engines/order-blocks/index.ts
  * Module contract:

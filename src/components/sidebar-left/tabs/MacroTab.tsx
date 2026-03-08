@@ -1,3 +1,4 @@
+// src/components/sidebar-left/tabs/MacroTab.tsx
 import { useMacroStore } from '../../../store/useMacroStore'
 import { useMarketStore } from '../../../store/useMarketStore'
 import type { MacroInputs } from '../../../types/macro.types'

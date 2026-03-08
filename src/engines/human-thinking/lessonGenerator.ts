@@ -1,3 +1,4 @@
+// src/engines/human-thinking/lessonGenerator.ts
 /**
  * lessonGenerator.ts
  * Generates a post-trade learning point based on the analysis context.

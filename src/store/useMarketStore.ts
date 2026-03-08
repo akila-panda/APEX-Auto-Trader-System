@@ -1,3 +1,4 @@
+// src/store/useMarketStore.ts
 import { create } from 'zustand'
 import type { Candle } from '../types/candle.types'
 import type { AnalysisResult } from '../types/analysis.types'

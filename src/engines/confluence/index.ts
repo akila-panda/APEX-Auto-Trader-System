@@ -1,3 +1,4 @@
+// src/engines/confluence/index.ts
 /**
  * engines/confluence/index.ts
  * Module contract:

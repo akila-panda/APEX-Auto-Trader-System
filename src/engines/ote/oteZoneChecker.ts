@@ -1,3 +1,4 @@
+// src/engines/ote/oteZoneChecker.ts
 /**
  * oteZoneChecker.ts
  * [FIX C-3] Checks if current price is inside the OTE zone — pure location check only.
