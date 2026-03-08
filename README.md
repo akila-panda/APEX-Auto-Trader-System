@@ -4,7 +4,7 @@
 
 A modular, production-grade Smart Money Concept (SMC) trading dashboard for EUR/USD, converted from a monolithic HTML file into a fully typed React codebase. All **25 audit fixes** from the v2 review are implemented.
 
----
+---asds
 
 ## Quick Start
 
