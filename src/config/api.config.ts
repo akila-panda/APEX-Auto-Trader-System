@@ -5,6 +5,17 @@ export const TD_BASE_URL = 'https://api.twelvedata.com'
 export const TD_WS_URL   = `wss://ws.twelvedata.com/v1/quotes/price?apikey=${TD_API_KEY}`
 export const SYMBOL      = 'EUR/USD'
 
+export const BROKER_SYMBOL_MAP: Record<string, string> = {
+  EURUSD: 'EURUSD',
+} as const
+
+export const toBrokerSymbol = (s: string): string => {
+  const key = s.replace('/', '')
+  return BROKER_SYMBOL_MAP[key] ?? key
+}
+
+export const BROKER_SYMBOL = toBrokerSymbol(SYMBOL)
+
 /** Rate-limit config for Twelve Data free tier */
 export const RATE_LIMITS = {
   DAILY_LIMIT:      800,

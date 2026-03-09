@@ -1,9 +1,5 @@
 // src/engines/auto-trader/tradeExecutor.ts
-/**
- * tradeExecutor.ts
- * Creates a trade record with a probability-weighted simulated outcome.
- * All outcomes are clearly labeled as SIMULATED — not real executions.
- */
+
 
 import type { Trade } from '../../types/trade.types'
 import type { AnalysisResult } from '../../types/analysis.types'
@@ -12,6 +8,37 @@ import { snap, p2 } from '../../utils/priceFormat'
 import {
   RISK_AMOUNT, SL_PIPS, TP1_RATIO, TP2_RATIO
 } from '../../config/trading.config'
+import { SYMBOL } from '../../config/api.config'
+
+type BrokerAction = 'BUY' | 'SELL'
+interface BrokerPayload {
+  symbol: string
+  action: BrokerAction
+  lot:    number
+  sl:     number
+  tp:     number
+}
+
+async function submitTradeSignal(payload: BrokerPayload): Promise<unknown> {
+  const res = await fetch('http://localhost:3001/trade', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+  let data: unknown = null
+  try {
+    data = await res.json()
+  } catch {
+    // ignore parse errors for non-JSON responses
+  }
+  if (!res.ok) {
+    throw new Error(`Broker API error: ${res.status}`)
+  }
+  return data
+}
 
 export function executeTrade(
   A:           AnalysisResult,
@@ -20,26 +47,44 @@ export function executeTrade(
   const { signal, entry, risk, macro, sess, coreScore, effectiveScore,
           cf_macro, cf_htf, cf_sweep, cf_mss, cf_ote, cf_kz, cf_news, isLive } = A
 
-  // Probability-weighted simulation — session and score influence win rate
-  const baseWR  = sess.inLondonKZ ? 0.65 : sess.inNYKZ ? 0.62 : 0.55
-  const bonusWR = coreScore === 5 ? 0.05 : 0
-  const isWin   = Math.random() < (baseWR + bonusWR)
-  const hitTP2  = isWin && Math.random() < 0.55
-  const isBE    = !isWin && Math.random() < 0.20
+  // Simulation logic commented out for testing:
+  // const baseWR  = sess.inLondonKZ ? 0.65 : sess.inNYKZ ? 0.62 : 0.55
+  // const bonusWR = coreScore === 5 ? 0.05 : 0
+  // const isWin   = Math.random() < (baseWR + bonusWR)
+  // const hitTP2  = isWin && Math.random() < 0.55
+  // const isBE    = !isWin && Math.random() < 0.20
+  //
+  // let exitPrice: number, pipCount: number, pnl: number, rMultiple: number, status: Trade['status']
+  //
+  // if (hitTP2)  { exitPrice = risk.tp2; pipCount = risk.tp2Pips;  pnl = p2(RISK_AMOUNT * TP2_RATIO); rMultiple = TP2_RATIO;  status = 'WIN'  }
+  // else if (isWin) { exitPrice = risk.tp1; pipCount = risk.tp1Pips; pnl = p2(RISK_AMOUNT * TP1_RATIO); rMultiple = TP1_RATIO; status = 'WIN' }
+  // else if (isBE) { exitPrice = entry;    pipCount = 0;            pnl = 0;                            rMultiple = 0;         status = 'BE'   }
+  // else           { exitPrice = risk.sl;  pipCount = -SL_PIPS;     pnl = -RISK_AMOUNT;                 rMultiple = -1;        status = 'LOSS' }
+  //
+  // if (signal === 'SHORT') pipCount = -pipCount
 
-  let exitPrice: number, pipCount: number, pnl: number, rMultiple: number, status: Trade['status']
+  const brokerPayload: BrokerPayload = {
+    symbol: SYMBOL,
+    action: signal === 'LONG' ? 'BUY' : 'SELL',
+    lot:    risk.lots,
+    sl:     risk.sl,
+    tp:     risk.tp1,
+  }
+  // fire-and-forget: do not await to keep executeTrade synchronous for callers
+  void submitTradeSignal(brokerPayload).catch(console.error)
 
-  if (hitTP2)  { exitPrice = risk.tp2; pipCount = risk.tp2Pips;  pnl = p2(RISK_AMOUNT * TP2_RATIO); rMultiple = TP2_RATIO;  status = 'WIN'  }
-  else if (isWin) { exitPrice = risk.tp1; pipCount = risk.tp1Pips; pnl = p2(RISK_AMOUNT * TP1_RATIO); rMultiple = TP1_RATIO; status = 'WIN' }
-  else if (isBE) { exitPrice = entry;    pipCount = 0;            pnl = 0;                            rMultiple = 0;         status = 'BE'   }
-  else           { exitPrice = risk.sl;  pipCount = -SL_PIPS;     pnl = -RISK_AMOUNT;                 rMultiple = -1;        status = 'LOSS' }
+  const exitPrice   = entry
+  const pipCount    = 0
+  const pnl         = 0
+  const rMultiple   = 0
+  const status: Trade['status'] = 'OPEN'
 
-  if (signal === 'SHORT') pipCount = -pipCount
+  // if (signal === 'SHORT') pipCount = -pipCount
 
   return {
     id:             `#${String(nextTradeId).padStart(4, '0')}`,
     timestamp:      fmtDT(),
-    pair:           'EUR/USD',
+    pair:           SYMBOL,
     tf:             A.tfId,
     direction:      signal as 'LONG' | 'SHORT',
     entry:          snap(entry),
@@ -69,6 +114,6 @@ export function executeTrade(
     sweepLabel:     A.sweepR.label,
     zoneLabel:      A.zoneLabel,
     signalSource:   isLive ? 'LIVE CANDLES' : 'SIMULATED CANDLES',
-    outcomeType:    'SIMULATED OUTCOME',
+    outcomeType:    'BROKER SUBMITTED',
   }
 }

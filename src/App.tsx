@@ -272,6 +272,7 @@ function AppInner() {
           nextTradeId,
           isNewsNearby:  !isNewsClear,
           allResults,
+          openTrades:    useTradeStore.getState().trades.filter(t => t.status === 'OPEN'),
         })
 
         if (result.signalFound) incrementSignals()  // [FIX A-3]

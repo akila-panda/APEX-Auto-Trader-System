@@ -14,6 +14,7 @@ import type { Trade } from '../../types/trade.types'
 import { evaluateSignals } from '../signal/index'
 import { checkDailyLimit }  from './dailyLimitGuard'
 import { executeTrade }     from './tradeExecutor'
+import { SYMBOL }           from '../../config/api.config'
 
 export interface BotCycleState {
   settings:         BotSettings
@@ -23,6 +24,7 @@ export interface BotCycleState {
   nextTradeId:      number
   isNewsNearby:     boolean
   allResults:       AnalysisResult[]
+  openTrades:       Trade[]
 }
 
 export interface BotCycleResult {
@@ -68,6 +70,33 @@ export async function runBotCycle(state: BotCycleState): Promise<BotCycleResult>
     return { trade: null, signalFound, blocked, blockReason }
   }
 
-  const trade = executeTrade(evalResult.best, state.nextTradeId)
+  const best = evalResult.best
+
+  const confidencePass = best.effectiveScore >= state.settings.minScore
+  const structurePass =
+    best.struct.structure !== 'ranging' &&
+    ((best.signal === 'LONG'  && best.struct.structure === 'bullish') ||
+     (best.signal === 'SHORT' && best.struct.structure === 'bearish'))
+    || (best.bosR.bos && ((best.signal === 'LONG' && best.bosR.direction === 'bullish') ||
+                          (best.signal === 'SHORT' && best.bosR.direction === 'bearish')))
+
+  const pairKey = SYMBOL.replace('/', '')
+  const conflictingOpen = state.openTrades.some(t =>
+    t.status === 'OPEN' &&
+    (t.pair.replace('/', '') === pairKey) &&
+    (t.direction !== (best.signal as 'LONG' | 'SHORT'))
+  )
+
+  if (!confidencePass || !structurePass || conflictingOpen) {
+    blocked = true
+    blockReason = !confidencePass
+      ? 'Signal confidence below threshold.'
+      : !structurePass
+      ? 'Market structure confirmation missing.'
+      : 'Conflicting open position exists.'
+    return { trade: null, signalFound, blocked, blockReason }
+  }
+
+  const trade = executeTrade(best, state.nextTradeId)
   return { trade, signalFound, blocked, blockReason }
 }
