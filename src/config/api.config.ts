@@ -20,14 +20,14 @@ export const BROKER_SYMBOL = toBrokerSymbol(SYMBOL)
 export const RATE_LIMITS = {
   DAILY_LIMIT:      800,
   PER_MIN_LIMIT:    8,
-  STAGGER_DELAY_MS: 500,   // delay between sequential TF fetches
+  STAGGER_DELAY_MS: 8000,   // delay between sequential TF fetches
 } as const
 
 /** Cache TTL — candles are considered fresh for 4 minutes */
 export const CANDLE_CACHE_TTL_MS = 4 * 60 * 1000
 
 /** WebSocket reconnect delay */
-export const WS_RECONNECT_DELAY_MS = 30_000
+export const WS_RECONNECT_DELAY_MS = 5_000
 
 /** Chart throttle — max redraws per second */
 export const CHART_THROTTLE_MS = 500
