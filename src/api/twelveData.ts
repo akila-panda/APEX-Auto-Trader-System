@@ -10,18 +10,25 @@ import { TD_BASE_URL, TD_API_KEY, SYMBOL } from '../config/api.config'
 import { canMakeAPICall, trackAPICall, waitIfRateLimited } from './rateLimit'
 import { snap } from '../utils/priceFormat'
 
-/** Fetches OHLCV candles for a given interval. Returns null on failure. */
+/**
+ * Fetches OHLCV candles for a given interval. Returns null on failure.
+ *
+ * [FIX 4] Added optional `symbol` parameter. Defaults to the primary SYMBOL (EUR/USD)
+ * so all existing call sites are unchanged. Pass 'GBP/USD' to fetch the correlated
+ * pair for SMT divergence.
+ */
 export async function fetchCandles(
   interval:   string,
   outputsize: number = 80,
+  symbol:     string = SYMBOL,
 ): Promise<Candle[] | null> {
   if (!canMakeAPICall()) return null
-  
+
   // Use a unique lock for each TF to prevent concurrent requests for the same TF
   // and ensure waitIfRateLimited is respected.
   await waitIfRateLimited()
 
-  const url = `${TD_BASE_URL}/time_series?symbol=${encodeURIComponent(SYMBOL)}&interval=${interval}&outputsize=${outputsize}&apikey=${TD_API_KEY}`
+  const url = `${TD_BASE_URL}/time_series?symbol=${encodeURIComponent(symbol)}&interval=${interval}&outputsize=${outputsize}&apikey=${TD_API_KEY}`
 
   try {
     const res  = await fetch(url)
@@ -34,11 +41,11 @@ export async function fetchCandles(
     if (data.status === 'error') {
       // If we hit a rate limit even with our guard, force a reset
       if (data.message?.toLowerCase().includes('api credits')) {
-        console.warn(`[API] Rate limit hit on ${interval}. Backing off...`)
+        console.warn(`[API] Rate limit hit on ${interval} ${symbol}. Backing off...`)
       }
       throw new Error(data.message ?? 'API error')
     }
-    
+
     if (!data.values || !Array.isArray(data.values)) throw new Error('No candle data returned')
 
     // Twelve Data returns newest-first — reverse to get chronological order
@@ -50,7 +57,7 @@ export async function fetchCandles(
       datetime: v.datetime,
     }))
   } catch (err) {
-    console.error(`fetchCandles(${interval}):`, err)
+    console.error(`fetchCandles(${interval} ${symbol}):`, err)
     return null
   }
 }

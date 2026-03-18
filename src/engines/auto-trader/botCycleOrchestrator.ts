@@ -5,6 +5,10 @@
  *
  * The cycle guard uses a ref (not React state) to avoid triggering re-renders.
  * The finally block ALWAYS releases the lock, even if the cycle throws.
+ *
+ * [FIX 2] BotCycleState now carries pipelineFinalScore (the weighted 0–17.5 score from
+ * tradingPipeline). confidencePass uses this instead of best.effectiveScore, which was
+ * on the old 0–5.5 scale and could never clear minScore=8 — permanently blocking every trade.
  */
 
 import type { AnalysisResult } from '../../types/analysis.types'
@@ -17,14 +21,22 @@ import { executeTrade }     from './tradeExecutor'
 import { SYMBOL }           from '../../config/api.config'
 
 export interface BotCycleState {
-  settings:         BotSettings
-  cooldown:         CooldownState
-  tradesToday:      number
-  lastTradeDate:    string
-  nextTradeId:      number
-  isNewsNearby:     boolean
-  allResults:       AnalysisResult[]
-  openTrades:       Trade[]
+  settings:           BotSettings
+  cooldown:           CooldownState
+  tradesToday:        number
+  lastTradeDate:      string
+  nextTradeId:        number
+  isNewsNearby:       boolean
+  allResults:         AnalysisResult[]
+  openTrades:         Trade[]
+  /**
+   * [FIX 2] Weighted confluence score (0–17.5) from tradingPipeline.finalScore.
+   * Used for confidencePass instead of best.effectiveScore so both the pipeline
+   * and the orchestrator operate on the same scoring scale.
+   * Optional for backward compatibility — falls back to best.effectiveScore if absent,
+   * though that path should not occur in normal operation.
+   */
+  pipelineFinalScore?: number
 }
 
 export interface BotCycleResult {
@@ -39,6 +51,7 @@ export interface BotCycleResult {
  * (useBotStore + useEffect) since it must be a ref, not React state.
  *
  * [FIX A-1] Always call cycleRunning = false in the caller's finally block.
+ * [FIX 2]   Uses pipelineFinalScore for confidencePass when available.
  */
 export async function runBotCycle(state: BotCycleState): Promise<BotCycleResult> {
   // Check daily limit
@@ -72,7 +85,13 @@ export async function runBotCycle(state: BotCycleState): Promise<BotCycleResult>
 
   const best = evalResult.best
 
-  const confidencePass = best.effectiveScore >= state.settings.minScore
+  // [FIX 2] Use the pipeline's weighted score when available. The pipeline already validated
+  // confluence at Stage 6 with the same minScore threshold, so this check is a safety net
+  // rather than the primary gate. Using best.effectiveScore here was the bug: it came from
+  // the legacy flat scorer (max 5.5) and could never clear minScore=8.
+  const scoreToCheck    = state.pipelineFinalScore ?? best.effectiveScore
+  const confidencePass  = scoreToCheck >= state.settings.minScore
+
   const structurePass =
     best.struct.structure !== 'ranging' &&
     ((best.signal === 'LONG'  && best.struct.structure === 'bullish') ||
@@ -90,7 +109,7 @@ export async function runBotCycle(state: BotCycleState): Promise<BotCycleResult>
   if (!confidencePass || !structurePass || conflictingOpen) {
     blocked = true
     blockReason = !confidencePass
-      ? 'Signal confidence below threshold.'
+      ? `Signal confidence below threshold (score: ${scoreToCheck.toFixed(1)}, min: ${state.settings.minScore}).`
       : !structurePass
       ? 'Market structure confirmation missing.'
       : 'Conflicting open position exists.'

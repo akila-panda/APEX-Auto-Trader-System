@@ -23,6 +23,7 @@ export type SessionPhase =
   | 'ASIA'
   | 'LONDON_OPEN'     // 03–07 UTC  — London pre-market / early sweep
   | 'LONDON_MAIN'     // 07–10 UTC  — main London KZ (already in killZoneConfluence)
+  | 'PRE_NY'          // 10–12 UTC  — London close / NY pre-market
   | 'NY_OPEN'         // 12–13 UTC  — NY open power hour
   | 'NY_MAIN'         // 13–15 UTC  — main NY KZ
   | 'NY_LATE'         // 15–17 UTC  — Silver Bullet 3 / fading
@@ -84,7 +85,7 @@ function classifyPhase(utcHour: number): SessionPhase {
   if (utcHour >= 20 || utcHour < 3)  return 'ASIA'
   if (utcHour >= 3  && utcHour < 7)  return 'LONDON_OPEN'
   if (utcHour >= 7  && utcHour < 10) return 'LONDON_MAIN'
-  if (utcHour >= 10 && utcHour < 12) return 'LONDON_OPEN'  // London close / NY pre
+  if (utcHour >= 10 && utcHour < 12) return 'PRE_NY'
   if (utcHour >= 12 && utcHour < 13) return 'NY_OPEN'
   if (utcHour >= 13 && utcHour < 15) return 'NY_MAIN'
   if (utcHour >= 15 && utcHour < 17) return 'NY_LATE'
@@ -96,6 +97,7 @@ function phaseLabel(phase: SessionPhase): string {
     ASIA:         '🌙 Asia Range',
     LONDON_OPEN:  '🇬🇧 London Open',
     LONDON_MAIN:  '🇬🇧 London Killzone',
+    PRE_NY:       '🌐 London Close / Pre-NY',
     NY_OPEN:      '🗽 NY Open',
     NY_MAIN:      '🗽 NY Killzone',
     NY_LATE:      '🗽 NY Late / Silver Bullet',
