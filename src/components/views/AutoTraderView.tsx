@@ -1,5 +1,5 @@
 // src/components/views/AutoTraderView.tsx
-import { useBotStore, type BotSettings } from '../../store/useBotStore'
+import { useBotStore } from '../../store/useBotStore'
 import { useMarketStore } from '../../store/useMarketStore'
 import { useTradeStore } from '../../store/useTradeStore'
 import { TFCard } from '../shared/TFCard'
@@ -101,7 +101,7 @@ export function AutoTraderView() {
               <SettingRow label="Min Confluence" sub="Required score (3-5)">
                 <div className="flex items-center gap-3">
                   <input
-                    type="range" min={3} max={5} step={0.5} value={bot.minScore}
+                    type="range" min={5} max={15} step={0.5} value={bot.minScore}
                     onChange={e => bot.setSetting('minScore', parseFloat(e.target.value))}
                     className="w-16 accent-aqua"
                   />

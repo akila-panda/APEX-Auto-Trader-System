@@ -1,6 +1,6 @@
 // src/config/api.config.ts
 /** Twelve Data API configuration  */
-export const TD_API_KEY  = import.meta.env.VITE_TD_API_KEY ?? '0dc58b7071b64c4c9c0e981c0c753dff'
+export const TD_API_KEY  = import.meta.env.VITE_TD_API_KEY ?? '7be7d3b6815f467b9c31b1c686f0d32b'
 export const TD_BASE_URL = 'https://api.twelvedata.com'
 export const TD_WS_URL   = `wss://ws.twelvedata.com/v1/quotes/price?apikey=${TD_API_KEY}`
 export const SYMBOL      = 'EUR/USD'

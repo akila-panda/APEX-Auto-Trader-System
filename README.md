@@ -1,114 +1,102 @@
 <!-- README.md -->
 # APEX EUR/USD v3 Ultimate
 
-> Institutional SMC Auto-Trader — React + TypeScript + Vite
+> Institutional SMC Auto-Trader — React + TypeScript + Vite + MT5 Bridge
 
-A modular, production-grade Smart Money Concept (SMC) trading dashboard for EUR/USD, converted from a monolithic HTML file into a fully typed React codebase. All **25 audit fixes** from the v2 review are implemented.
+A modular, production-grade Smart Money Concept (SMC) trading dashboard for EUR/USD. APEX2 is designed to scan multiple timeframes, identify high-confluence institutional setups, and execute them automatically via a MetaTrader 5 (MT5) bridge.
 
----asds
+---
 
-## Quick Start
+## 🚀 Quick Start
 
 ```bash
 # 1. Install dependencies
-cd apex-eurusd
 npm install
 
-# 2. Add your Twelve Data API key
-echo "VITE_TWELVE_DATA_API_KEY=your_key_here" > .env
+# 2. Add your Twelve Data API key to .env
+VITE_TD_API_KEY=your_key_here
 
-# 3. Start development server
+# 3. Start the Signal Server (MT5 Bridge)
+node signalServer.cjs
+
+# 4. Start the Frontend
 npm run dev
+```
 
-# 4. Run tests
+---
+
+## 🏗️ System Architecture
+
+### 1. Analysis Engines (`src/engines/`)
+- **Market Structure**: 3-bar pivot detection for Swing Highs/Lows and Premium/Discount zones.
+- **Order Blocks**: Detection of institutional supply and demand zones with mitigation checks.
+- **Fair Value Gaps**: Newest-first scanning for price imbalances (FVGs).
+- **Liquidity**: Sweep detection on swing points and Asian Range session levels.
+- **BOS/CHoCH**: Structural break detection with impulse leg walk-back logic.
+- **OTE**: Fibonacci-anchored Optimal Trade Entry zone calculation (62% - 79%).
+- **Confluence**: Multi-factor scoring engine (Macro + Structure + POI + Liquidity + News).
+
+### 2. Auto-Trader & Execution (`src/engines/auto-trader/`)
+- **Bot Orchestrator**: Manages the multi-TF scanning cycle and execution gating.
+- **Eligibility Gate**: Trades only trigger if:
+    - Signal confidence > `minScore`.
+    - Market structure aligns with signal direction (or BOS confirmation).
+    - No conflicting open position exists for the same pair.
+- **Trade Executor**: Formats and transmits signals to the execution bridge.
+- **Daily Limit Guard**: Enforces UTC-based daily trade limits to protect capital.
+
+### 3. Execution Bridges
+- **Node.js Bridge (`signalServer.cjs`)**: Writes signals to the MT5 "Common/Files" directory for EA reading.
+- **Python Bridge (`mt5_bridge.py`)**: Direct MT5 API integration using Flask and the `MetaTrader5` library.
+
+---
+
+## 🛡️ Safety & Risk Management
+
+| Feature | Logic |
+|---------|-------|
+| **Confidence Threshold** | Minimum confluence score (default 4.0/5.0) required. |
+| **Structure Guard** | Prevents buying in bearish structure or selling in bullish structure. |
+| **Conflict Check** | Blocks new trades if an opposite-direction trade is already open. |
+| **Cooldown** | 30-minute wait period between same-direction trades. |
+| **Daily Limit** | Hard stop after X trades per day (default 3). |
+| **Slippage** | 10-point (1 pip) protection in the MT5 bridge. |
+| **Lot Limits** | Minimum 0.01 / Maximum 1.0 lots enforced at the bridge level. |
+
+---
+
+## 📊 Technical Stack
+
+- **Frontend**: React 18, TypeScript 5, Vite 5, Tailwind CSS 3.
+- **State**: Zustand 4 (Market, Macro, Bot, Trade stores).
+- **API**: Twelve Data (8 calls/min, 800/day free tier) with rate limiting and cache.
+- **Real-time**: WebSocket tick streaming for real-time price updates.
+- **Testing**: Vitest for unit and deep integration tests.
+
+---
+
+## 📂 Configuration
+
+- **`api.config.ts`**: API keys, base URLs, rate limits, and **Symbol Mapping** (e.g., `EURUSD` vs `EURUSD.pro`).
+- **`trading.config.ts`**: Risk percentage, pip values, stop loss/take profit ratios, and confluence weights.
+- **`timeframes.config.ts`**: Timeframe definitions from Daily down to 5-minute.
+
+---
+
+## 🧪 Testing
+
+APEX2 includes a comprehensive test suite, including a **Deep Integration Test** that simulates the entire bot cycle from signal detection to execution gating.
+
+```bash
+# Run all tests
 npm test
 
-# 5. Build for production
-npm run build
+# Run the Auto Trader deep test specifically
+npm run test tests/engines/autoTraderDeep.test.ts
 ```
 
 ---
 
-## Architecture
+## ⚠️ Disclaimer
 
-```
-src/
-├── config/          # API, trading constants, timeframes
-├── types/           # TypeScript interfaces (candle, analysis, trade, macro)
-├── store/           # Zustand stores (market, macro, bot, trade)
-├── api/             # Twelve Data REST + WebSocket, rate limiter, cache
-├── engines/
-│   ├── market-structure/   # FIX B-1: 3-bar pivot detection
-│   ├── order-blocks/       # OB detection + validation
-│   ├── fair-value-gaps/    # FIX B-5: newest-first FVG scan
-│   ├── liquidity/          # FIX C-2: 6-candle sweep detection
-│   ├── bos-choch/          # FIX B-2: impulse leg walk-back
-│   ├── ote/                # FIX B-2: impulse-anchored Fibonacci
-│   ├── confluence/         # FIX C-1/C-3/C-4: split HTF, OTE guard, strength tiers
-│   ├── signal/             # FIX A-3/A-4/A-5: post-filter counter, TF weighting, cooldown
-│   ├── risk/               # Lot size, SL, TP calculators
-│   ├── auto-trader/        # FIX A-1: cycleRunning guard, bot orchestrator
-│   └── human-thinking/     # Pattern recognition, narrative, lesson generator
-├── hooks/           # useLivePrice, useCandleData, useMultiTFAnalysis, etc.
-├── utils/           # priceFormat, dateTime, pipCalculator, localStorage
-└── components/
-    ├── layout/      # TopBar, StatusBar
-    ├── chart/       # ChartCanvas (canvas-based candlestick renderer)
-    ├── shared/      # Badge, Module, FeedItem, TFCard, SignalCard
-    ├── sidebar-left/
-    │   ├── tabs/    # Strategy, Feed, Checklist, Macro, Calendar
-    │   └── modules/ # Structure, Liquidity, OrderBlock, FVG, Signal
-    ├── sidebar-right/  # PriceLevels, TradePlan, Confluence, SignalAnalysis
-    └── views/       # ChartView, AutoTraderView, TradeTableView, JournalView
-```
-
----
-
-## All 25 Audit Fixes
-
-| Fix | Description |
-|-----|-------------|
-| **A-1** | `cycleRunning` ref guard prevents concurrent bot cycles |
-| **A-2** | `macroInputs` all default to `0`, 100% user-driven via +1/0/-1 buttons |
-| **A-3** | `totalSignals` increments ONLY in `evaluateSignals()` after ALL filters pass |
-| **A-4** | Sort formula: `effectiveScore + (inKZ ? 0.5 : 0) + TF_WEIGHT * 0.1` |
-| **A-5** | Cooldown guard reads `lastTradeTime + lastTradeDirection`, blocks same-direction |
-| **B-1** | `high[i] > high[i-1] && high[i] > high[i+1]` 3-bar pivot detection |
-| **B-2** | Walk back from displacement candle to find full impulse leg origin for OTE anchor |
-| **B-3** | Y-axis labels use `.toFixed(5)` — 5 decimal place forex precision |
-| **B-4** | Right-edge filled badge with exact price for every level line |
-| **B-5** | FVG loop scans newest-first — returns most recent gap, not oldest |
-| **C-1** | `cf_htf` split into `cf_structure + cf_poi` (20-pip proximity check) |
-| **C-2** | Sweep scans ALL 6 candles newest-first + persists validity via `sweepWindowExpiry` |
-| **C-3** | `oteConfluence` only checks `ote.inOTE` — no direction guard |
-| **C-4** | `macroBonus = strength === 'STRONG' ? 0.5 : 0`, `effectiveScore = coreScore + macroBonus` |
-
----
-
-## API & Rate Limits
-
-- **Provider**: [Twelve Data](https://twelvedata.com) (free tier)
-- **Limits**: 8 calls/min, 800 calls/day
-- **WebSocket**: Real-time EUR/USD tick streaming with REST poll fallback
-- **Cache TTL**: 4 minutes per timeframe
-
----
-
-## Tech Stack
-
-| Package | Version | Purpose |
-|---------|---------|---------|
-| React | 18 | UI |
-| TypeScript | 5 | Type safety |
-| Vite | 5 | Build tool |
-| Zustand | 4 | State management |
-| Tailwind CSS | 3 | Styling |
-| Recharts | 2 | Charts (supplemental) |
-| date-fns | 3 | Date utilities |
-| Vitest | 1 | Unit tests |
-
----
-
-## Disclaimer
-
-**SIMULATED OUTCOMES ONLY.** All trade results (Win/Loss) are probability-weighted simulations — not real executions. This tool is for educational and signal quality analysis purposes only. Not financial advice.
+**ALGORITHMIC TRADING CARRIES SIGNIFICANT RISK.** While APEX2 includes numerous safety guards, market conditions can change rapidly. Always test new strategies and configurations on a **Demo Account** before going live. The authors are not responsible for financial losses.

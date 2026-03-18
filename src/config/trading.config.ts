@@ -34,8 +34,10 @@ export const MACRO_STRONG_THRESHOLD   =  4   // |score| >= 4 → STRONG [FIX C-4
 export const MACRO_MEDIUM_THRESHOLD   =  3   // |score| == 3 → MEDIUM
 export const MACRO_STRONG_BONUS       = 0.5  // [FIX C-4] score bonus for STRONG macro
 
-/** Default bot settings */
-export const DEFAULT_MIN_SCORE   = 4
+/** Default bot settings — weighted scoring system (0–17.5 scale) */
+export const DEFAULT_MIN_SCORE       = 8   // standard quality trades (was 4 on 0–5 scale)
+export const DEFAULT_MIN_SCORE_HIGH  = 10  // high conviction only
+export const WEIGHTED_SCORING        = true // enables APEX2 pipeline
 export const DEFAULT_MAX_TRADES  = 3
 export const DEFAULT_COOLDOWN_MINS = 30
 export const DEFAULT_SCAN_INTERVAL_MS = 300_000  // 5 minutes

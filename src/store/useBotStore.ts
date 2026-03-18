@@ -54,7 +54,7 @@ export const useBotStore = create<BotStore>((set) => ({
   lastTradeDirection: null,
   activeSignals:      [],
   scanIntervalMs:     300_000,
-  minScore:           4,
+  minScore:           8,   // APEX2: weighted system scores 0–17.5 (was 4 on 0–5 scale)
   maxTradesPerDay:    3,
   cooldownMins:       30,
   kzOnly:             true,

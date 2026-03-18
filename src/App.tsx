@@ -34,6 +34,8 @@ import { TIMEFRAMES } from './config/timeframes.config'
 import { fetchCandles } from './api/twelveData'
 import { isCacheFresh, generateFallbackCandles } from './api/candleCache'
 import { runBotCycle } from './engines/auto-trader/index'
+import { runTradingPipeline }  from './engines/tradingPipeline'
+import { patchMacroStore }     from './engines/macro/macroBiasEngine'
 
 // Components
 import { TopBar }            from './components/layout/TopBar'
@@ -263,6 +265,66 @@ function AppInner() {
 
         const today = `${new Date().getUTCFullYear()}-${new Date().getUTCMonth()}-${new Date().getUTCDate()}`
         resetToday(today)
+
+        // ── APEX2 Pipeline — runs BEFORE runBotCycle() ──────────────────
+        // As per integration guide Step 2. We evaluate against the best
+        // available TF result (highest weighted score, non-WAIT signal).
+        const bestResult = allResults
+          .filter(r => r.signal !== 'WAIT')
+          .sort((a, b) => b.effectiveScore - a.effectiveScore)[0] ?? null
+
+        if (bestResult) {
+          const marketState   = useMarketStore.getState()
+          const macroState    = useMacroStore.getState()
+          const dailyCandles  = marketState.candles['1day'] ?? []
+          const h4Candles     = marketState.candles['4h']   ?? []
+          const tfCandles     = marketState.candles[bestResult.tfId] ?? []
+
+          const pipelineResult = runTradingPipeline({
+            analysis:     bestResult,
+            candles:      tfCandles,
+            dailyCandles,
+            h4Candles,
+            symbol:       'EURUSD',
+            spreadPips:   0.8,          // simulated spread — replace with live broker feed
+            entryPrice:   marketState.currentPrice,
+            stopLoss:     bestResult.risk.sl,   // [BUG #3 FIX] correct path: risk.sl
+            takeProfit:   bestResult.risk.tp1,  // [BUG #3 FIX] correct path: risk.tp1
+            manualMacro: {
+              bias:     macroState.computedBias(),
+              strength: macroState.computedStrength(),   // [BUG #5 FIX] real strength, not hardcoded
+              locked:   macroState.locked,
+            },
+            minWeightedScore: botSettings.minScore,
+          })
+
+          console.log(
+            `[Pipeline] ${pipelineResult.approved ? '✅ APPROVED' : '❌ BLOCKED'}: ` +
+            `${pipelineResult.rejectedReason || pipelineResult.qualityLabel}`
+          )
+          console.log(
+            `[Pipeline] Score: ${pipelineResult.finalScore} | ` +
+            `Setup: ${pipelineResult.strategy?.setup?.type ?? 'none'} | ` +
+            `Session: ${pipelineResult.session?.sessionLabel}`
+          )
+
+          if (!pipelineResult.approved) {
+            // Pipeline blocked — log to feed and skip this cycle
+            useMarketStore.getState().addFeedItem({
+              time:  new Date().toISOString(),
+              badge: 'WARN',
+              cls:   'fb-scan',
+              msg:   `[${pipelineResult.rejectedBy}] ${pipelineResult.rejectedReason}`,
+            })
+            return
+          }
+
+          // Auto-update macro store from engine result if not manually locked
+          if (pipelineResult.macro.source === 'engine') {
+            patchMacroStore(pipelineResult.macro, macroState.setFactor)
+          }
+        }
+        // ── End APEX2 Pipeline ───────────────────────────────────────────
 
         const result = await runBotCycle({
           settings:      botSettings,

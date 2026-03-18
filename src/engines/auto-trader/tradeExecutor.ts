@@ -4,9 +4,9 @@
 import type { Trade } from '../../types/trade.types'
 import type { AnalysisResult } from '../../types/analysis.types'
 import { fmtDT } from '../../utils/dateTime'
-import { snap, p2 } from '../../utils/priceFormat'
+import { snap } from '../../utils/priceFormat'
 import {
-  RISK_AMOUNT, SL_PIPS, TP1_RATIO, TP2_RATIO
+  RISK_AMOUNT, SL_PIPS,
 } from '../../config/trading.config'
 import { SYMBOL } from '../../config/api.config'
 
@@ -44,7 +44,7 @@ export function executeTrade(
   A:           AnalysisResult,
   nextTradeId: number,
 ): Trade {
-  const { signal, entry, risk, macro, sess, coreScore, effectiveScore,
+  const { signal, entry, risk, macro, coreScore, effectiveScore,
           cf_macro, cf_htf, cf_sweep, cf_mss, cf_ote, cf_kz, cf_news, isLive } = A
 
   // Simulation logic commented out for testing:

@@ -34,9 +34,10 @@ export function RightSidebar() {
       
       setAnalysis(activeTF, result)
       addFeedItem({
-        time: new Date().toISOString(),
+        time:  new Date().toISOString(),
         badge: 'ANALYSIS',
-        msg: `${result.dataSource} ${activeTF}: ${result.signal} | ${result.coreScore}/5 (${result.effectiveScore.toFixed(1)} eff) | ${result.bias.toUpperCase()} [${result.macroStrength}]`,
+        cls:   'fb-live',
+        msg:   `${result.dataSource} ${activeTF}: ${result.signal} | ${result.coreScore}/5 (${result.effectiveScore.toFixed(1)} eff) | ${result.bias.toUpperCase()} [${result.macroStrength}]`,
       })
     } finally {
       setTimeout(() => setLoading(false), 500)
