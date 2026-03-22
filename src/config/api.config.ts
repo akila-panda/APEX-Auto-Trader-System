@@ -31,3 +31,6 @@ export const WS_RECONNECT_DELAY_MS = 5_000
 
 /** Chart throttle — max redraws per second */
 export const CHART_THROTTLE_MS = 500
+
+/** MT5 WebRequest Bridge — local listener URL */
+export const MT5_BRIDGE_URL = 'http://localhost:4001'

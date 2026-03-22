@@ -4,8 +4,8 @@ const path = require("path");
 const app = express();
 
 const MT5_FILES = path.join(
-  process.env.HOME,
-  "Library/Application Support/net.metaquotes.wine.metatrader5/drive_c/users/user/AppData/Roaming/MetaQuotes/Terminal/Common/Files"
+    process.env.HOME,
+    "Library/Application Support/net.metaquotes.wine.metatrader5/drive_c/users/user/AppData/Roaming/MetaQuotes/Terminal/Common/Files"
 );
 
 if (!fs.existsSync(MT5_FILES)) fs.mkdirSync(MT5_FILES, { recursive: true });
@@ -29,6 +29,22 @@ app.post("/trade", (req, res) => {
         res.status(500).json({ status: "error", message: err.message });
     }
 });
+
+app.get("/signal", (req, res) => {
+    const filePath = path.join(MT5_FILES, "apex_signal.txt");
+    if (!fs.existsSync(filePath)) {
+        return res.send("null");
+    }
+    try {
+        const content = fs.readFileSync(filePath, "utf8").trim();
+        fs.unlinkSync(filePath); // consume the signal — delete after reading
+        console.log(`[${new Date().toISOString()}] Signal served: ${content}`);
+        res.send(content);
+    } catch (err) {
+        res.send("null");
+    }
+});
+
 
 app.get("/health", (req, res) => {
     res.json({ status: "running", path_exists: fs.existsSync(MT5_FILES) });

@@ -1,0 +1,6 @@
+{
+  "name": "apex2-mt5-listener",
+  "type": "commonjs",
+  "scripts": { "start": "node mt5Listener.cjs" },
+  "dependencies": { "express": "^4.18.0", "cors": "^2.8.5" }
+}

@@ -37,6 +37,7 @@ import { useCalendar } from './hooks/useCalendar'
 // Config
 import { TIMEFRAMES } from './config/timeframes.config'
 import { fetchCandles } from './api/twelveData'
+import { fetchCandlesMT5 } from './api/mt5Bridge'
 import { isCacheFresh, generateFallbackCandles } from './api/candleCache'
 import { runBotCycle } from './engines/auto-trader/index'
 import { runTradingPipeline } from './engines/tradingPipeline'
@@ -56,6 +57,14 @@ const queryClient = new QueryClient()
 
 // [FIX 4] Store key for GBP/USD 1H candles used by SMT divergence engine.
 const CORRELATED_TF_KEY = 'gbpusd_1h'
+
+// Set true to use MT5 WebRequest bridge instead of Twelve Data API
+const USE_MT5_BRIDGE = true
+
+const fetchCandlesActive = (interval: string, outputsize = 80, symbol = 'EUR/USD') =>
+  USE_MT5_BRIDGE
+    ? fetchCandlesMT5(interval, outputsize, symbol)
+    : fetchCandles(interval, outputsize, symbol)
 
 export type NavTab = 'chart' | 'robot' | 'trades' | 'journal'
 
@@ -243,7 +252,7 @@ function AppInner() {
 
         // Staggered delay to avoid hitting the 8/min limit instantly
         // waitIfRateLimited() will handle the actual blocking if we go over 8
-        const c = await fetchCandles(tf.id, 80)
+        const c = await fetchCandlesActive(tf.id, 80)
 
         if (c && c.length > 0) {
           setCandles(tf.id, c)
@@ -260,7 +269,7 @@ function AppInner() {
       // [FIX 4] Fetch GBP/USD 1H for SMT divergence after the main TF loop.
       if (!isCacheFresh(CORRELATED_TF_KEY, candleFetchedAt)) {
         await new Promise(r => setTimeout(r, 800))
-        const gbp = await fetchCandles('1h', 80, 'GBP/USD')
+        const gbp = await fetchCandlesActive('1h', 80, 'GBP/USD')
         if (gbp && gbp.length > 0) {
           setCandles(CORRELATED_TF_KEY, gbp)
           console.log('[App] Loaded GBP/USD 1H for SMT divergence.')
@@ -315,7 +324,7 @@ function AppInner() {
         for (const tf of TIMEFRAMES) {
           if (!isCacheFresh(tf.id, useMarketStore.getState().candleFetchedAt)) {
             await new Promise(r => setTimeout(r, 500))
-            const c = await fetchCandles(tf.id, 80)
+            const c = await fetchCandlesActive(tf.id, 80)
             if (c && c.length > 0) setCandles(tf.id, c)
           }
         }
